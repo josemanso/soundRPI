@@ -3,7 +3,6 @@ import sys
 import os
 import numpy as np
 from scipy.io import wavfile
-from scipy.signal import fftconvolve
 from scipy.fftpack import fft, ifft
 import matplotlib.pyplot as plt
 
@@ -58,14 +57,14 @@ plt.title('Impulse response')
 datan = data/2**15
 IRn = IR/2**15
 # convolución
-y = fconv(datan,IR)
+yout = fconv(datan,IR)
 
-y = y * 2**15
+yout = yout * 2**15
 
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/reverbConvchur2.wav',
-                       fs, y.astype(np.int16))
+                       fs, yout.astype(np.int16))
         #print('Escritura de archivo correcta') 
 except IOError as e:
     #  # parent of IOError, OSError *and* WindowsError where available
@@ -76,8 +75,8 @@ except IOError as e:
 plt.figure(2)
 time = np.arange(len(data))/fs
 plt.subplot(211)
-timerv= np.arange(len(y))/fs
-plt.plot(timerv, y)
+timerv= np.arange(len(yout))/fs
+plt.plot(timerv, yout)
 
 plt.title("Convolution Reverb")
 plt.xlabel('reverberation ')

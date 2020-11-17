@@ -49,11 +49,11 @@ for i in range(len(data)):
     if (Mi + 1)  > i:
         Mi = i-1
     #y[i] = data[i -(Mi+1)]*frac + data[i-(Mi-1)]*(1-frac)
-    y[i] = data[i -(Mi+1)]*frac + data[i-(Mi)]*(1-frac)
+    y[i] = data[i -(Mi+1)]*frac + data[i-(Mi)]* abs(1-frac)
                                        
 # write wav file
 try:
-    wavfile.write('/home/pi/wavfiles/vibrato.wav',
+    wavfile.write('/home/pi/wavfiles/vibrato1.wav',
                        fs, y.astype(np.int16))
         #print('Escritura de archivo correcta') 
 except IOError as e:

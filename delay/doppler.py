@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        file_input = "440Hz_44100Hz_16bit_05sec.wav"
-        #file_input = "guitar.wav"
+        #file_input = "440Hz_44100Hz_16bit_05sec.wav"
+        file_input = "CantinaBand60.wav"
     else:
         file_input = sys.argv[1]
         print(sys.argv[1])
@@ -19,7 +19,7 @@ except IOError as ex:
 # excepcion de fichero
 if os.path.isfile("/home/pi/wavfiles/"+file_input):
     filename ="/home/pi/wavfiles/"+file_input
-    #filename ="/home/josemo/"+file_input
+    
     print('file exit')
 else:
     print('File not exit')
@@ -28,7 +28,7 @@ else:
 # read wave file
 fs, data = wavfile.read(filename)
 #print(' fs', fs,' shapes ', data.shape, ' data ', data)
-data= data[:5*fs] # acortamos a 5 segundos
+data= data[:15*fs] # acortamos a 5 segundos
 print(' fs', fs,' shapes ', data.shape, ' data ', data)
 
 L = len(data)
@@ -56,18 +56,15 @@ distance = np.linalg.norm((position_source-position_receiver), axis = 1)
 delay = distance / Vsonido
 
 # aumentar disminuir
-aumentar = np.linspace(-0.3, 1, L//2)
+aumentar = np.linspace(-max(delay), 1, L//2)
 disminuir = aumentar[::-1]
-
+aux = np.concatenate((aumentar, disminuir), axis=0)
 # gains
 gain = np.zeros(L)
 yout = np.zeros(L)
 
 for i in range(L):
-    if i < L//2:
-        gain[i] = delay[i] + aumentar[i]
-    else:
-        gain[i] = delay[i] + disminuir[i-(L//2)]
+    gain[i] = delay[i] + aux[i]
     yout[i] = gain[i] * data[i] 
 
 # write wav file
@@ -82,6 +79,7 @@ except IOError as e:
 
 #fig = plt.figure(1, figsize =(8,3))
 #ax = fig .add_subplot(1,2,1)
+plt.figure(1)
 plt.subplot(2,1,1)
 #plt.plot(data, 'g--', yout, 'r--')
 plt.plot(times, yout)
@@ -90,5 +88,9 @@ plt.title('Efecto doppler')
 plt.subplot(2,1,2)
 plt.ylabel('delay')
 plt.plot(times, delay)
+plt.xlabel('segundos')
+plt.figure(2)
+plt.ylabel('gain')
+plt.plot(times, gain)
 plt.xlabel('segundos')
 plt.show()
