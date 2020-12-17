@@ -6,7 +6,7 @@ import wave
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        file_input = 'grabacion.wav'
+        file_input = 'grabacion1.wav'
     else:
         file_input = sys.argv[1]
         print(sys.argv[1])
@@ -55,5 +55,5 @@ wf.writeframes(b''.join(frames))
 wf.close()
 
 # plays the audio file
-os.system("aplay /home/pi/wavfiles/grabacion.wav")
+os.system("aplay /home/pi/wavfiles/grabacion1.wav")
                 

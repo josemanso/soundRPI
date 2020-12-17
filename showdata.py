@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-       file_input = 'grabacion.wav'
+       file_input = 'grabacion1.wav'
        
     else:
         file_input = sys.argv[1]

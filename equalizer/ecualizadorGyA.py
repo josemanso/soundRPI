@@ -47,7 +47,7 @@ fs = 44100
 bb, ab = shelving(G, fcl, fs, Q, tipo = 'Base_Shelf')
 bh, ah = shelving(G1, fch, fs, Q, tipo = 'Treble_Shelf')
 
-# en paralelo
+# en serie
 graves = lfilter(bb,ab, data)
 agudos = lfilter(bh,ah, data)
 y = graves+agudos

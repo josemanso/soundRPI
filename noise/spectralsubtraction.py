@@ -15,20 +15,18 @@ from scipy.signal import hann
 def spectralSubtraction(data, f_size, n_frames, alpha):
     
     # data is the complete signal
-    # f_size is the size o f frames, nº points, windowing
+    # f_size is the size of frames, nº points, windowing
     # n_frames is the number of noise frames
     # overlap 50%
     
-    # samples stores a list of overloappedwindow size
+    # samples stores a list of overloapped window of size f_size
     samples = []
     
     # phases stores a list phases information of every frames
     phases  =[]
     
-    # out will be the final reconstruction signal
+    # y will be the final reconstruction signal
     y = np.zeros((len(data)), dtype='complex')
-    # primer tramo para la reconstrucción
-    y[:f_size] = data[:f_size]
     
     # nº de ventanas que tendremos
     lps = int(len(data)/f_size) +1
@@ -59,10 +57,10 @@ def spectralSubtraction(data, f_size, n_frames, alpha):
     # assuming first few frames are only noisy frames,
     # Sum all the noisy frames in one frame
     noise = np.asarray(samples[0])
-    for i in range(1, n_frames):
+    for j in range(1, n_frames):
         # sumamos arrays,
         # elemento a elemnto y nos quedamos con una
-        noise = list(map(lambda x, y : x+y, noise, samples[i]))
+        noise = list(map(lambda x, y : x+y, noise, samples[j]))
         
     # Get an average noise magnitude
     noise = list(map(lambda x: x/n_frames, noise))
@@ -71,6 +69,9 @@ def spectralSubtraction(data, f_size, n_frames, alpha):
     # multiply bia to noises, factor de aumento del ruido
     #noise *=7
     noise*=alpha
+    #print('noise ', noise)
+    
+    
     
     # perform spectra subtraction
     samples = [list(map(lambda x : x - noise, i)) for i in samples]
@@ -80,29 +81,32 @@ def spectralSubtraction(data, f_size, n_frames, alpha):
         samples[idx] = [0 if i < noise else i for i in frm]
         
       
-    #print(hn_win) 
     # ahora hacemos la ifft
     # zero off negative amplitudes.
     # multuply phase information with their respectives frames.
-    # Perform IFFT
-    
-    for i in range(len(samples)-1):
+    # Perform IFFT  
+        
+    for h in range(len(samples)-1):
+        #samples[h][samples[h] <0 ] =0# [ 0 if i < 0 else i for i in samples]
+        #np.where(samples[h] <0, 0, samples[h])
+        #samples[h] = [0 if i < 0 else i for i in enumerate(samples[h])]
+        samples[h] = [0 if i < 0 else i for i in (samples[h])]
         # formula de Euler
-        samples[i] =list(map(lambda x, y: x*np.exp(1j*y), samples[i], phases[i]))
-        samples[i] = ifft(samples[i])
+        samples[h] =list(map(lambda x, y: x*np.exp(1j*y), samples[h], phases[h]))
+        samples[h] = ifft(samples[h])
         
         # overlap
         ind = int(f_size/2)
         
-        for j in range(f_size):
-            y[i*ind+j] = samples[i][j] + y[i*ind+j]
+        for k in range(f_size):
+            y[h*ind+k] = samples[h][k] + y[h*ind+k]
             
     return y
 
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        file_input = "grabacion.wav"
+        file_input = "grabacion1.wav"
         
     else:
         file_input = sys.argv[1]

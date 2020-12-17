@@ -7,14 +7,13 @@ import time
 from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 from scipy.signal import hann
-#import matplotlib.pyplot as plt
 
 
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        file_input = "grabacion_ruido.wav"
-        
+        file_input = "grabacion1.wav"
+        #file_input = "grabacion_ruido.wav"
     else:
         file_input = sys.argv[1]
         print(sys.argv[1])
@@ -34,10 +33,6 @@ print('data ', datan.shape, ' fs ', fs)
 
 RATE = fs
 
-t = np.arange(len(datan))/fs
-#plt.plot(t, datan)
-#plt.grid()
-#plt.show() # 0,7 seg
 # ruido: el primer segundo del archivo 1024 *43 =44032
 #noise = data[:44032] #  1 segundo aprox
 # hHann window
@@ -69,8 +64,8 @@ for j in range(1, (lps*2)):
 noise = list(map(lambda x: x/(lps*2), noise))
 noise = np.mean(noise)
 
-noise *= 7
-
+noise *= 0#7
+noise = noise.astype(np.int16)
 print('noise ', noise)
 
 
@@ -84,7 +79,7 @@ def noiseless(data_in):
     # la señal ha de ser de 1024, pero tengo tres tramas
     # necesito tres tramas con overlap del 50%,
     
-    
+    #print('pasa??')
     samples = np.zeros((3,1024)) # lista de tramas con overlap 50%
     
 
@@ -121,17 +116,16 @@ def noiseless(data_in):
     out[512:] = np.real(samples[1][512:]+samples[2][:512])
             
     # y devolvemos una trama, hecha la ifft, rehacer la señal
-        
+    out = out.astype(np.int16)   
     return out
 
 signal_in = []
 signal_out = np.zeros(1024) #[]
-new = np.zeros(1024)#.dtype(np.int16)
 def callback(in_data, frame_count, time_info, status):
     
     data = np.frombuffer(in_data, np.int16)
    
-    global signal_in, signal_out, new
+    global signal_in, signal_out
     signal_in = np.append(signal_in, data)
     if len(signal_in) == 3072: # 2048:  #q .full():
         # hacemos el computo
@@ -139,15 +133,9 @@ def callback(in_data, frame_count, time_info, status):
         # quitamos el primer chunk
         signal_in = signal_in[1024:]
         #signal_out = signal_out.astype(np.int16).tostring()
-        #print('out ', signal_out.dtype)# float64
-        #signa_ut = signal_out.astype(np.int16)
-        #print('out ', signal_out.shape, 'data', signal_out)
+        #print('sa ',signal_out.dtype, 'y da ', signal_out)
         #signal_out = signal_out.astype(np.int16).tobytes()
-        #print('out ', signal_out)
-        new = signal_out.astype(np.int16)
-        #print('out n ', new.shape, 'n ', new)
-        new = new.tobytes()
-    return (new, pyaudio.paContinue)
+    return (signal_out, pyaudio.paContinue)
     #return (data, pyaudio.paContinue)
 
 p = pyaudio.PyAudio()

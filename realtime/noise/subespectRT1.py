@@ -1,4 +1,4 @@
-# Susbtracción espectral del ruido
+# Sustracción espectral del ruido
 import sys
 import os
 import numpy as np
@@ -7,8 +7,6 @@ import time
 from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 from scipy.signal import hann
-#import matplotlib.pyplot as plt
-
 
 # entrada de argumentos
 try:
@@ -33,11 +31,6 @@ fs, datan = wavfile.read(filename)
 print('data ', datan.shape, ' fs ', fs)
 
 RATE = fs
-
-t = np.arange(len(datan))/fs
-#plt.plot(t, datan)
-#plt.grid()
-#plt.show() # 0,7 seg
 # ruido: el primer segundo del archivo 1024 *43 =44032
 #noise = data[:44032] #  1 segundo aprox
 # hHann window
@@ -59,9 +52,6 @@ for i in range(lps*2):
     noise_fft.append(np.array(abs(fft(samplesn))))
 
 noise = np.array(noise_fft[1])
-
-
-    
 for j in range(1, (lps*2)):
     
     noise = list(map(lambda x, y : x + y, noise, noise_fft[j]))
@@ -72,8 +62,6 @@ noise = np.mean(noise)
 noise *= 7
 
 print('noise ', noise)
-
-
 
 # necesito 3 chunks, desde el segundo hacer el algoritmo
 def noiseless(data_in):
@@ -126,12 +114,11 @@ def noiseless(data_in):
 
 signal_in = []
 signal_out = np.zeros(1024) #[]
-new = np.zeros(1024)#.dtype(np.int16)
 def callback(in_data, frame_count, time_info, status):
     
     data = np.frombuffer(in_data, np.int16)
    
-    global signal_in, signal_out, new
+    global signal_in, signal_out
     signal_in = np.append(signal_in, data)
     if len(signal_in) == 3072: # 2048:  #q .full():
         # hacemos el computo
@@ -139,15 +126,8 @@ def callback(in_data, frame_count, time_info, status):
         # quitamos el primer chunk
         signal_in = signal_in[1024:]
         #signal_out = signal_out.astype(np.int16).tostring()
-        #print('out ', signal_out.dtype)# float64
-        #signa_ut = signal_out.astype(np.int16)
-        #print('out ', signal_out.shape, 'data', signal_out)
-        #signal_out = signal_out.astype(np.int16).tobytes()
-        #print('out ', signal_out)
-        new = signal_out.astype(np.int16)
-        #print('out n ', new.shape, 'n ', new)
-        new = new.tobytes()
-    return (new, pyaudio.paContinue)
+        signal_out = signal_out.astype(np.int16).tobytes()
+    return (signal_out, pyaudio.paContinue)
     #return (data, pyaudio.paContinue)
 
 p = pyaudio.PyAudio()
