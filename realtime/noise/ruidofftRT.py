@@ -1,10 +1,8 @@
 # Susbtracción espectral del ruido
-import sys
 import os
 import numpy as np
 import pyaudio
 import time
-from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 from scipy.signal import hann
 
@@ -29,16 +27,9 @@ def callback(in_data, frame_count, time_info, status):
     y = noise_reduction_fft(data)
     
     y = np.real(y)
-    #y.astype(np.int16)
-    #y = np.int_(y)
-    #y = y/3
-    #np.asarray(y, dtype=int)
+    
     new_y = y.astype(np.int16)
-    #print('y', new_y.dtype, 'dat ', new_y)
-    #y = y.astype(np.int16).tobytes()
-    #new_y = new_y(np.int16).tobytes()
-    #return (y, pyaudio.paContinue)
-    #return (data, pyaudio.paContinue)
+    
     new_y = new_y.tobytes()
     return (new_y, pyaudio.paContinue)
 

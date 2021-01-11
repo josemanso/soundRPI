@@ -30,23 +30,20 @@ else:
     exit()    
 # read wave file
 fs, datan = wavfile.read(filename)
-print('data ', datan.shape, ' fs ', fs)
+#print('data ', datan.shape, ' fs ', fs)
 
 RATE = fs
 
 t = np.arange(len(datan))/fs
-#plt.plot(t, datan)
-#plt.grid()
-#plt.show() # 0,7 seg
-# ruido: el primer segundo del archivo 1024 *43 =44032
-#noise = data[:44032] #  1 segundo aprox
+
 # hHann window
 hann_win = hann(1024)
 # fft con hann_win y overlap al ruido
 # overlap 50% , será 43*2 + 1 = 87
 lps = int(44032/1024) +1
 samplesn = np.zeros(1024) # []
-noise_fft = [[]]
+#noise_fft = [[]]
+noise_fft = list(())#[[]]
 
 for i in range(lps*2):
     
@@ -57,6 +54,7 @@ for i in range(lps*2):
     samplesn = samplesn*hann_win[:len(samplesn)]
     
     noise_fft.append(np.array(abs(fft(samplesn))))
+    
 
 noise = np.array(noise_fft[1])
 
@@ -71,7 +69,7 @@ noise = np.mean(noise)
 
 noise *= 7
 
-print('noise ', noise)
+#print('noise ', noise)
 
 
 
@@ -124,7 +122,8 @@ def noiseless(data_in):
         
     return out
 
-signal_in = []
+#signal_in = []
+signal_in = list()#[]
 signal_out = np.zeros(1024) #[]
 new = np.zeros(1024)#.dtype(np.int16)
 def callback(in_data, frame_count, time_info, status):
@@ -138,12 +137,7 @@ def callback(in_data, frame_count, time_info, status):
         signal_out = noiseless(signal_in)
         # quitamos el primer chunk
         signal_in = signal_in[1024:]
-        #signal_out = signal_out.astype(np.int16).tostring()
-        #print('out ', signal_out.dtype)# float64
-        #signa_ut = signal_out.astype(np.int16)
-        #print('out ', signal_out.shape, 'data', signal_out)
-        #signal_out = signal_out.astype(np.int16).tobytes()
-        #print('out ', signal_out)
+        
         new = signal_out.astype(np.int16)
         #print('out n ', new.shape, 'n ', new)
         new = new.tobytes()
