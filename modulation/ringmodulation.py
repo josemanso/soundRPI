@@ -53,7 +53,9 @@ except IOError as e:
 #plot
 #f, ax1 = plt.subplots(2,1,figsize=(5,5))
 time = np.arange(len(data))/fs
-plt.plot(time, data,'g--',time, y, 'r--')
+time2 = time[:1024]
+#plt.plot(time, data,'g--',time, y, 'r--')
+plt.plot(data[:1024],'g--', y[:1024], 'r--')
 plt.title('Ring Modulation')
 plt.xlabel('Original green, ring red')
 plt.show()

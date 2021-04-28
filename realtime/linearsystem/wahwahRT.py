@@ -61,7 +61,8 @@ def callback(in_data, frame_count, time_info, status):
         if ind >=109567:# 109568 -1
             #print('ind ', ind)
             ind = 0
-    
+    #salida sum de la señal filradab y direct
+    yb = (yb + data)#/2
     sample = yb.astype(np.int16).tostring()
     #return (in_data, pyaudio.paContinue)
     return (sample, pyaudio.paContinue)
