@@ -8,8 +8,8 @@ from scipy.signal import hann
 
 
 RATE = 44100
-# 50000 hacemos un filtro tal que PSD, que es(a+bi)*(a-bi), 
-# y descatamos lo valores mayores de 50000, estose hace de forma visual
+# 50000 hacemos un filtro a PSD, que es(a+bi)*(a-bi), 
+# y descartamos lo valores mayores de 50000, esto se hace de forma visual
 # haciendo la gráfica de PSD y viendo los valores que son ruido
 def noise_reduction_fft(data_in):
     n = len(data_in)
