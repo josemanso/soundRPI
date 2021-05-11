@@ -35,11 +35,11 @@ index = np.arange(len(data))
 rate1 = 7
 rate2 = 10
 rate3 = 12
-A = 5 # amplituda
+A = 5 # amplitud
 lfo1 = A*np.sin(2*np.pi*index*rate1/fs)
 lfo2 = A*np.sin(2*np.pi*index*rate2/fs)
 lfo3 = A*np.sin(2*np.pi*index*rate3/fs)
-# ganabcias
+# ganancias
 g = 0.2
 
 delay = int(0.040 * fs) # frames
