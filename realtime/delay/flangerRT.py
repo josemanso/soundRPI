@@ -28,6 +28,9 @@ anterior = np.zeros(1024)
 pa= pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
     #array_data = np.append(q.get(), data)
@@ -52,7 +55,8 @@ def callback(in_data, frame_count, time_info, status):
     anterior = y    
         
     sample = y.astype(np.int16).tostring()
-    
+    if c == 30:
+        print(' tiempo real flanger: ', time.time() - s)
     return (sample, pyaudio.paContinue)
 
 # open stream

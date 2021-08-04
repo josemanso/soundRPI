@@ -22,6 +22,10 @@ RATE = 44100
 pa= pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
+    # tiempo
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
     data1 = data.copy()
@@ -33,6 +37,8 @@ def callback(in_data, frame_count, time_info, status):
     
     sample = y.astype(np.int16).tostring()
     #return (in_data, pyaudio.paContinue)
+    if c == 30:
+        print('tiempo overdrive: ', time.time() - s)
     return (sample, pyaudio.paContinue)
 # open stream
 stream = pa.open(

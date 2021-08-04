@@ -4,6 +4,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 def simetria(x):
    # th=1/3; threshold for symmetrical soft clipping% by Schetzen Formula
@@ -21,7 +22,7 @@ def simetria(x):
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-       file_input = "guitar.wav"
+        file_input = "guitar.wav"
         
     else:
         file_input = sys.argv[1]
@@ -48,20 +49,21 @@ norm = 32768
 data = data/norm
 # Overdrive simulation
 N = len(data)
-y = np.zeros(N) # preallocate
-
-y = simetria(data)
+y_out = np.zeros(N) # preallocate
+# tiempo
+start = time.time()
+y_out = simetria(data)
 
 # write output file
-y = y.clip(-0.98,0.98)# menor valor y mayor valor,pare una mejor audición
-y = y * norm
+y_out = y_out.clip(-0.98,0.98)# menor valor y mayor valor,pare una mejor audición
+y_out = y_out * norm
 
+print('tiempo de fitrado overdrive: ', time.time() - start)
 data = data *norm
-
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/overdrive.wav',
-                       fs, y.astype(np.int16))
+                       fs, y_out.astype(np.int16))
         #print('Escritura de archivo correcta') 
 except IOError as e:
     #  # parent of IOError, OSError *and* WindowsError where available
@@ -76,9 +78,9 @@ p = np.sin(2*np.pi*2*t/fss)
 z = simetria(p)
 
 #plot
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 plt.figure(1)
-plt.plot(time, data,'g--', time, y, 'r--')
+plt.plot(timel, data,'g--', timel, y_out, 'r--')
 plt.title("Overdrive")
 plt.xlabel('Original green, overdrive red')
 #plt.figure(2)

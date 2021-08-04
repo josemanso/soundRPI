@@ -4,11 +4,13 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-       file_input = "acoustic.wav"
+       #file_input = "acoustic.wav"
+       file_input = "guitar.wav"
         
     else:
         file_input = sys.argv[1]
@@ -39,7 +41,7 @@ rate = 10  # Hz
 y = np.zeros(len(data))
 
 #maxdelay = math.ceil(1+delay*fs+1)
-
+start = time.time()
 for i in range(len(data)):
     M = 1+delay*fs+delay*fs*np.sin(rate/fs*2*np.pi*i)
     #M = 1+delay*fs+delay*fs*np.sin(rate*2*np.pi*i)
@@ -50,7 +52,7 @@ for i in range(len(data)):
         Mi = i-1
     #y[i] = data[i -(Mi+1)]*frac + data[i-(Mi-1)]*(1-frac)
     y[i] = data[i -(Mi+1)]*frac + data[i-(Mi)]* abs(1-frac)
-                                       
+print(' tiempo vibrato: ', time.time() - start)                                       
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/vibrato1.wav',

@@ -22,6 +22,10 @@ y = np.zeros(1024)
 pa= pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
+    # tiempo
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
 
@@ -41,7 +45,9 @@ def callback(in_data, frame_count, time_info, status):
         A = A[1024:]
         B = np.append(B, y)
 
-    samples = y.astype(np.int16).tostring()        
+    samples = y.astype(np.int16).tostring()
+    if c == 30:
+        print('tiempo reverb: ', time.time() - s)
     return (samples, pyaudio.paContinue)
 
 # open stream

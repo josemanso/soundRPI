@@ -4,6 +4,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
@@ -48,7 +49,8 @@ index = np.arange(len(data))
 sin_ref = np.sin(2*np.pi*index*(rate/fs))
 y = np.zeros(len(data))
 y[:max_time_delay] = data[:max_time_delay] # = np.copy(data)
-
+# tiempo
+start = time.time()
 for i in range (max_time_delay +1, len(data)):
 
     lfo = np.abs(sin_ref[i]) # valores entre 0 y 1
@@ -62,7 +64,7 @@ for i in range (max_time_delay +1, len(data)):
         y[i] = -32768
     
     
-
+print('tiempo flanger: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/flanger.wav',

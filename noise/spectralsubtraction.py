@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 from scipy.signal import hann
-
+import time
 #The noisy signal y(m) is a sum of the desired signal
 # x(m) and the noise n(m);  y(m) = x(m) + n(m)
 # In the frequency domain, this may be denoted as:
@@ -130,9 +130,10 @@ print('data ', data.shape, ' fs ', fs)
 window_size = 400 #512
 noise_frames = 100# máximo,como tenemos overlap 50%, 0,6s
 alpha = 5
-
+# tiempo
+start = time.time()
 y =spectralSubtraction(data, window_size, noise_frames, alpha)
-
+print('tiempo filtrado del ruido: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/ruidoless1.wav',
@@ -143,8 +144,8 @@ except IOError as e:
     print('Error al escritura el archivo')
     print(e)
     
-time = np.arange(len(data))/fs
-plt.plot(time, data,'g--',time, y.real, 'r--')#,time, data,'g--')
+timel = np.arange(len(data))/fs
+plt.plot(timel, data,'g--',timel, y.real, 'r--')#,time, data,'g--')
 
 plt.title('spectral subtraction ')
 plt.xlabel('Original green, resta red')

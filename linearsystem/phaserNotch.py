@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import iirnotch, sawtooth
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
@@ -40,15 +41,16 @@ f4 = 4000
 g = 0.7 # gain signal
 Q = 2 # factor de calidad
 
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 # LFO
-lfo = 2+sawtooth(2*np.pi*flfo*time)
+lfo = 2+sawtooth(2*np.pi*flfo*timel)
 
 y1 = np.zeros(len(data))
 y2 = np.zeros(len(data))
 y3 = np.zeros(len(data))
 y = np.zeros(len(data))
-
+# tiempo
+start = time.time()
 for i in range(2,len(data)):
     b, a = iirnotch(f1/fs*lfo[i], Q)
     y1[i] = (b[0]*data[i]+b[1]*data[i-1]+b[2]*data[i-2]
@@ -70,6 +72,7 @@ for i in range(2,len(data)):
              -a[1]*y[i-1]-a[2]*y[i-2])
 
 out = y + g*data
+print('tiempo phaser notch: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/phasernotch.wav',
@@ -83,7 +86,7 @@ except IOError as e:
     
 #plot
 plt.figure(1)
-plt.plot(time, data, 'g--', time, out, 'r--')
+plt.plot(timel, data, 'g--', timel, out, 'r--')
 plt.title('Efecto Phaser')
 plt.xlabel('datos verde, datos filtrados rojo')
 plt.grid()

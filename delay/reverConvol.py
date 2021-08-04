@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 import matplotlib.pyplot as plt
+import time
 
 # Reverberación por comvolución
 
@@ -52,7 +53,8 @@ tr = np.arange(len(IR))/fsIr
 plt.figure(1)
 plt.plot(tr, IR)
 plt.title('Impulse response')
-
+# tiempo
+start = time.time()
 # normalizamos entre -1 y 1
 datan = data/2**15
 IRn = IR/2**15
@@ -60,7 +62,7 @@ IRn = IR/2**15
 yout = fconv(datan,IR)
 
 yout = yout * 2**15
-
+print(' Convolución tiempo de procesado: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/reverbConvchur2.wav',

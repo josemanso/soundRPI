@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import sawtooth
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
@@ -46,14 +47,16 @@ AP3a2 = r3**2
 AP4a2 = r4**2
 g = 0.8
 
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 # LFO
-phaseModulator = 0.8+sawtooth(2*np.pi*flfo*time)
+phaseModulator = 0.8+sawtooth(2*np.pi*flfo*timel)
 
 y1 = np.zeros(len(data))
 y2 = np.zeros(len(data))
 y3 = np.zeros(len(data))
 y = np.zeros(len(data))
+# tiempo
+start = time.time()
 
 for i in range(2,len(data)):
     
@@ -78,6 +81,7 @@ for i in range(2,len(data)):
             -AP4a1*y[i-1] - AP4a2*y[i-2])
 
 out = y + g*data
+print('tiempo phaser all-pass: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/phaserall.wav',
@@ -91,12 +95,12 @@ except IOError as e:
     
 #plot
 plt.figure(1)
-plt.plot(time, data, 'g--', time, out, 'r--')
+plt.plot(timel, data, 'g--', timel, out, 'r--')
 plt.title('Efecto Phaser')
 plt.xlabel('datos verde, datos filtrados rojo')
 plt.grid()
 plt.figure(2)
-plt.plot(time, phaseModulator)
+plt.plot(timel, phaseModulator)
 plt.title('LFO ')
 
 plt.show()

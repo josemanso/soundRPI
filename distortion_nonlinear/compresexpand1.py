@@ -7,6 +7,7 @@ matplotlib.use('TkAgg')
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 def comprexpander(x, ratio, th_compress, th_expan):
     # x data input
@@ -81,8 +82,12 @@ print('data ', data.shape, ' fs ', fs)
 th_comp= -10#-5 # dB
 th_exp = -60#-70 # dB
 CR = 4
+# tiempo
+start = time.time()
 #y = comprexpander(data, CR, th_comp, th_exp)
+#print('tiempo de fitrado compresor: ', time.time() - start)
 y, g, gc, ge = comprexpander(data, CR, th_comp, th_exp)
+print('tiempo de fitrado compresor: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/comprexpander1.wav',
@@ -94,26 +99,26 @@ except IOError as e:
     print(e)
 
 #plot
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 plt.figure(1)
 #plt.subplot(211)
-plt.plot(time, y, 'r--', time, data,'g--')
+plt.plot(timel, y, 'r--', timel, data,'g--')
 plt.xlabel('Señal original verde, señal comprimida /espandida, rojo')
 #plt.subplot(212)
 plt.figure(2)
 # máx alrededor de 3.6, antes
 
-plt.plot(time,data, 'g--',time,y, 'r--')
+plt.plot(timel,data, 'g--',timel,y, 'r--')
 plt.xlabel('Señal original verde, señal comprimida /espandida, rojo')
 #plt.ylabel("log")
 plt.figure(3)
-plt.plot(time,g)
+plt.plot(timel,g)
 plt.xlabel('ganancia')
 plt.figure(4)
-plt.plot(time,gc)
+plt.plot(timel,gc)
 plt.xlabel('compresión')
 plt.figure(5)
-plt.plot(time,ge)
+plt.plot(timel,ge)
 plt.xlabel(' expansión ')
 plt.grid()
 

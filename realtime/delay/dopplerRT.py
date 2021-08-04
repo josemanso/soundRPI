@@ -49,6 +49,9 @@ pa= pyaudio.PyAudio()
 
 indice = 0
 def callback(in_data, frame_count, time_info, status):
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
     data = data.copy()
@@ -59,7 +62,9 @@ def callback(in_data, frame_count, time_info, status):
         indice +=1
         if indice >= L:
             indice = 0
-    #samples = y_f.astype(np.float64).tostring()        
+    #samples = y_f.astype(np.float64).tostring()
+    if c == 30:
+        print(' tiempo real doppler: ', time.time() - s)
     return (data, pyaudio.paContinue)
 
 

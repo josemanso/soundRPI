@@ -4,13 +4,14 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        #file_input = "440Hz_44100Hz_16bit_05sec.wav"
-        file_input = "CantinaBand60.wav"
+        file_input = "440Hz_44100Hz_16bit_05sec.wav"
+        #file_input = "CantinaBand60.wav"
     else:
         file_input = sys.argv[1]
         print(sys.argv[1])
@@ -28,7 +29,8 @@ else:
 # read wave file
 fs, data = wavfile.read(filename)
 #print(' fs', fs,' shapes ', data.shape, ' data ', data)
-data= data[:15*fs] # acortamos a 5 segundos
+#data= data[:15*fs] # acortamos a 5 segundos
+#data= data[:15*fs] # acortamos a 5 segundos
 print(' fs', fs,' shapes ', data.shape, ' data ', data)
 
 L = len(data)
@@ -36,7 +38,7 @@ times = np.arange(L)/fs
 
 velocity  = 70 # velocidad de la fuente 
 Vsonido = 342.0 # m/seg
-
+start = time.time()
 # posición
 # vector x  = espacio x tiempo
 x = times * velocity
@@ -66,7 +68,7 @@ yout = np.zeros(L)
 for i in range(L):
     gain[i] = delay[i] + aux[i]
     yout[i] = gain[i] * data[i] 
-
+print('tiempo doppler: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/doppler.wav',

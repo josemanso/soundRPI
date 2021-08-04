@@ -23,6 +23,9 @@ pa= pyaudio.PyAudio()
 
 
 def callback(in_data, frame_count, time_info, status):
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
     # hacemos el computo
@@ -38,7 +41,9 @@ def callback(in_data, frame_count, time_info, status):
             y[i] = (data[i-Mi+1]*frac) + (data[i-Mi]* (abs(1-frac)))
         else:
             y[i] = data[i]
-    #samples = y.astype(np.int16).tostring()        
+    #samples = y.astype(np.int16).tostring()
+    if c == 30:
+        print(' tiempo real flanger: ', time.time() - s)
     return (y, pyaudio.paContinue)
 
 # open stream

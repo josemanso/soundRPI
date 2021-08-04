@@ -23,6 +23,13 @@ q.put(aux)
 pa= pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
+    #b = False
+    #tiempo1 = np.random.randint(100)
+    c = np.random.randint(100)
+    #b = False
+    if c == 30:
+        #b = True
+        s = time.time()
     # convert data to array
     data = np.frombuffer(in_data, np.int16)
     array_data = np.append(q.get(), data)
@@ -35,7 +42,9 @@ def callback(in_data, frame_count, time_info, status):
     y = data_filt[1024:]
     
     sample = y.astype(np.int16).tostring()
-    
+    if c ==30:
+        print('tiempo double: ', time.time()-s)
+        
     return (sample, pyaudio.paContinue)
 # open stream
 stream = pa.open(

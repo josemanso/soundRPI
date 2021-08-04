@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import lfilter
 import matplotlib.pyplot as plt
+import time
 
 from shelvingFunction import shelving
 from peakFunction import peakfilter
@@ -51,6 +52,8 @@ b1,a1 = peakfilter(1, 540,fs,Q)
 b2,a2 = peakfilter(2, 1620,fs,Q)
 b3,a3 = peakfilter(3, 4860,fs,Q)
 
+# tiempo
+start = time.time()
 # filtramos la señal
 #filtro shelving graves
 sl = lfilter(bb, ab, data)
@@ -67,7 +70,7 @@ y = lfilter(bh,ah, pa4)
 
 y[y>32768] = 32767
 y[y<-32768] = -32767
-
+print('tiempo de fitrado ecualizador: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/ecualizabandas.wav',
@@ -79,8 +82,8 @@ except IOError as e:
     print(e)
 #plot
 #f, ax1 = plt.subplots(2,1,figsize=(5,5))
-time = np.arange(len(data))/fs
-plt.plot(time, y, 'r--', time, data,'g--')#,time, data,'g--')
+timel = np.arange(len(data))/fs
+plt.plot(timel, y, 'r--', timel, data,'g--')#,time, data,'g--')
 #plt.plot(time, data, 'g--', time, y,'r--')#,time, data,'g--')
 plt.title('Ecualizador parámétrico')
 plt.xlabel('Original green, filtrada red')

@@ -22,7 +22,10 @@ def noise_reduction_fft(data_in):
 
 
 def callback(in_data, frame_count, time_info, status):
-    
+    # tiempo
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     data = np.frombuffer(in_data, np.int16)
     y = noise_reduction_fft(data)
     
@@ -31,6 +34,9 @@ def callback(in_data, frame_count, time_info, status):
     new_y = y.astype(np.int16)
     
     new_y = new_y.tobytes()
+    if c == 30:
+        print('tiempo sustracción espectral del ruido: ', time.time() - s)
+
     return (new_y, pyaudio.paContinue)
 
 p = pyaudio.PyAudio()

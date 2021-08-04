@@ -5,6 +5,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 def distorfuzz(x, g):         
     q = x *g
@@ -44,14 +45,15 @@ norm = 32768
 datan = data/norm
 print('datann ', datan.shape, ' fs ', fs)
 print('nor ', datan)
-
+# tiempo
+start = time.time()
 y = np.zeros(len(datan))
 g = 2 # ganancia
 y = distorfuzz(datan,g)
 
 # lo ponemos a 16 bits
 y = y*32767
-
+print('tiempo de fitrado distorsión: ', time.time() - start)
 
 # write wav file
 try:
@@ -70,10 +72,10 @@ p = np.sin(2*np.pi*2*t/fss)
 #p = np.sin(t)
 z = distorfuzz(p, g)
 #plot
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 plt.figure(2)
 #plt.plot(time, data,'g--', time, y, 'r--')
-plt.plot(time, y,'r--', time, data, 'g--')
+plt.plot(timel, y,'r--', timel, data, 'g--')
 plt.title("Distorsión Fuzz")
 plt.xlabel('Original green, distorsión red')
 

@@ -5,11 +5,12 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import lfilter
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-       file_input = "jpkmono.wav"
+        file_input = "jpkmono.wav"
         
     else:
         file_input = sys.argv[1]
@@ -37,10 +38,11 @@ delay = 280 #  5 ms 220 tramas
 b = np.zeros(delay)
 b[0]= 1
 b[-1]= 0.7
-
+#tiempo de filtrado
+start = time.time()
 data_filt = lfilter(b, 1, data)# sale muy saturado
 data_filt =  data_filt/1.5
-
+print('Tiempo de filtrado double: ', time.time()-start)
 # write wav file
 wavfile.write('/home/pi/wavfiles/double.wav',
               fs, data_filt.astype(np.int16))

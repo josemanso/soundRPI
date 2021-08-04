@@ -4,6 +4,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 # 4 IIR comb filter, en paralelo
 # cocetados a dos allpas
@@ -26,6 +27,7 @@ def allpass(x,g,d):
     for i in range(d,len(x)):
         y[i] = g*x[i] + x[i-d] - g*y[i-d]
     return y
+
 def schroeder(x, fs):
     # comb 1  g = 0.742 ; 29,7 ms ;4799; 
     # comb 2  g = 0.733 ; 37,1   delay = 4999
@@ -70,9 +72,11 @@ else:
 fs, data = wavfile.read(filename)
 print('data ', data.shape, ' fs ', fs)
 print ('data ', data)
-
+#tiempo
+start = time.time()
 yout = schroeder(data, fs)
-
+#yout = schroeder(data[fs:], fs)
+print(' tiempo Schroeder reverb: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/reverbSch.wav',

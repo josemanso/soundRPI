@@ -5,6 +5,7 @@ import os
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
+import time
 
 def compressor(ind, xc, R, th, d, gain):
     # ind índice, la muetra a analizar
@@ -84,6 +85,8 @@ else:
 fs, data = wavfile.read(filename)
 print('data ', data.shape, ' fs ', fs)
 
+# tiempo
+start = time.time()
 # fuera de la curva con ganancia 1
 datan = data / 32768  # 2¹⁶ /2
 th_comp= -5 # dB
@@ -94,6 +97,7 @@ CR = 4
 y = comprexpander(datan, CR, th_comp, th_exp)
 
 y = y * 32768
+print('tiempo de fitrado compresor: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/comprexpander1.wav',
@@ -104,15 +108,15 @@ except IOError as e:
     print('Error al escritura el archivo')
     print(e)    
 #plot
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 plt.figure(1)
 #plt.subplot(211)
-plt.plot(time, y, 'r--', time, data,'g--')
+plt.plot(timel, y, 'r--', timel, data,'g--')
 #plt.subplot(212)
 plt.figure(2)
 # máx alrededor de 3.6, antes
 
-plt.plot(time,data, 'g--',time,y, 'r--')
+plt.plot(timel,data, 'g--',timel,y, 'r--')
 #plt.ylabel("log")
 plt.grid()
 plt.show()

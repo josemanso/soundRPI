@@ -6,6 +6,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import lfilter
 import matplotlib.pyplot as plt
+import time
 
 from shelvingFunction import shelving
 
@@ -50,12 +51,14 @@ bh, ah = shelving(G1, fch, fs, Q, tipo = 'Treble_Shelf')
 # en serie
 graves = lfilter(bb,ab, data)
 agudos = lfilter(bh,ah, data)
+# tiempo
+start = time.time()
 y = graves+agudos
 y[y>32768] = 32767
 y[y<-32768] = -32767
 
 y = y/2
-
+print('tiempo de fitrado graves y agudos: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/ecualiGravesAgudos.wav',
@@ -69,8 +72,8 @@ except IOError as e:
 
 #plot
 #f, ax1 = plt.subplots(2,1,figsize=(5,5))
-time = np.arange(len(data))/fs
-plt.plot(time, data,'g--',time, y, 'r--')#,time, data,'g--')
+timel = np.arange(len(data))/fs
+plt.plot(timel, data,'g--',timel, y, 'r--')#,time, data,'g--')
 plt.title('Ecualizador grave y agudos')
 plt.xlabel('Original green, ecualizada red')
 plt.show()

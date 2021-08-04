@@ -127,7 +127,10 @@ signal_in = list()#[]
 signal_out = np.zeros(1024) #[]
 new = np.zeros(1024)#.dtype(np.int16)
 def callback(in_data, frame_count, time_info, status):
-    
+    # tiempo
+    c = np.random.randint(100)
+    if c == 30:
+        s = time.time()
     data = np.frombuffer(in_data, np.int16)
    
     global signal_in, signal_out, new
@@ -141,6 +144,8 @@ def callback(in_data, frame_count, time_info, status):
         new = signal_out.astype(np.int16)
         #print('out n ', new.shape, 'n ', new)
         new = new.tobytes()
+    if c == 30:
+        print('tiempo sustracción espectral del ruido: ', time.time() - s)
     return (new, pyaudio.paContinue)
     #return (data, pyaudio.paContinue)
 

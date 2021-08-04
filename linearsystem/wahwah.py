@@ -5,6 +5,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import iirpeak 
 import matplotlib.pyplot as plt
+import time
 
 # entrada de argumentos
 try:
@@ -49,7 +50,7 @@ while (len(fc)<len(data)):
 fc = fc[:len(data)]
 
 y = np.zeros(len(data))
-
+start = time.time()
 for i in range(2,len(data)):
     b, a = iirpeak(fc[i]/(fs/2), depth)
     y[i] = (b[0]*data[i] + b[1]*data[i-1]+ b[2]*data[i-2]
@@ -58,7 +59,7 @@ for i in range(2,len(data)):
 gain = 0.8
 
 yout = (1-gain)*data +  gain*y
-
+print('tiempo filtrado iirpeak wah-wah: ', time.time() - start)
 # write wav file
 try:
     wavfile.write('/home/pi/wavfiles/wahwah.wav',
@@ -71,14 +72,14 @@ except IOError as e:
     
 
 #plot
-time = np.arange(len(data))/fs
+timel = np.arange(len(data))/fs
 plt.figure(1)
 
-plt.plot(time,data, 'g--', time, yout,'r--')
+plt.plot(timel,data, 'g--', timel, yout,'r--')
 #plt.plot(time, lfo)
 plt.title('Efecto wah-wah')
 plt.xlabel('señal original verde, señal filtrada rojo')
 plt.figure(2)
-plt.plot(time, fc)
+plt.plot(timel, fc)
 plt.title('LFO, para el efecto wah-wah')
 plt.show()
