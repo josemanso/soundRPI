@@ -5,6 +5,8 @@ import time
 from scipy.signal import lfilter
 import queue as queue
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 # parámetros para el efecto doubling
 delay = 280 #  5 ms 220 tramas
 b = np.zeros(delay)
@@ -51,8 +53,10 @@ stream = pa.open(
         format = pyaudio.paInt16,#pa.get_format_from_width(2), # un byte
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 

@@ -7,6 +7,8 @@ from scipy.signal import lfilter
 from peakFunction import peakfilter
 from shelvingFunction import shelving
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 RATE = 44100
 Q = 0.7
 def equalizer(Q, fs, data):
@@ -65,8 +67,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 

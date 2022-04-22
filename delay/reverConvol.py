@@ -52,7 +52,11 @@ print('data IR ', IR.shape, ' fs ', fsIr)
 tr = np.arange(len(IR))/fsIr
 plt.figure(1)
 plt.plot(tr, IR)
-plt.title('Impulse response')
+plt.title('Señal de audio RIR')
+plt.xlabel('tiempo segundos')
+plt.ylabel('Amplitud')
+plt.grid(True)
+plt.tight_layout()
 # tiempo
 start = time.time()
 # normalizamos entre -1 y 1
@@ -80,12 +84,17 @@ plt.subplot(211)
 timerv= np.arange(len(yout))/fs
 plt.plot(timerv, yout)
 
-plt.title("Convolution Reverb")
-plt.xlabel('reverberation ')
-
+plt.title("Reverb. por Convolution")
+plt.xlabel('tiempo (s)')
+plt.ylabel('amplitud')
+plt.grid(True)
+plt.tight_layout()
 plt.subplot(212)
 plt.plot(time, data)
-plt.xlabel("origin")
-
+plt.title(" Señal original")
+plt.xlabel('tiempo (s)')
+plt.ylabel('amplitud')
+plt.grid(True)
+plt.tight_layout()
 
 plt.show()

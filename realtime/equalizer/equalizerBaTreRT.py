@@ -6,6 +6,9 @@ from scipy.signal import lfilter
 
 from shelvingFunction import shelving
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
+
 G_base = 5
 G_trev = -5
 fclow = 200
@@ -56,8 +59,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 

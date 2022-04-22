@@ -6,7 +6,8 @@ import time
 from scipy.fftpack import fft, ifft
 from scipy.signal import hann
 
-
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 RATE = 44100
 # 50000 hacemos un filtro a PSD, que es(a+bi)*(a-bi), 
 # y descartamos lo valores mayores de 50000, esto se hace de forma visual
@@ -45,15 +46,17 @@ stream = p.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 
 stream.start_stream()
 try:
     while stream.is_active():
         print("Stream is active")
-        time.sleep(12)
+        time.sleep(20)
         stream.stop_stream()
         print("Stream is stopped")
 except os.error as ex:

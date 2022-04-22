@@ -3,7 +3,8 @@ import numpy as np
 import pyaudio
 import time
 
-
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 norm = 32768  # de int16 a valores entre -1 y 1
 gain = 2 # ganancia gain
 def distorfuzz(x, g):         
@@ -40,8 +41,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 
 stream.start_stream()

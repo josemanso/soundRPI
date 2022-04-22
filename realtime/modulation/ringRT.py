@@ -3,6 +3,9 @@ import numpy as np
 import pyaudio
 import time
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
+
 # Efecto RING modulación, señal seno
 fc = 300 #200
 
@@ -30,14 +33,16 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 
 while stream.is_active():
     print("Stream is active")
-    time.sleep(10)
+    time.sleep(20)
     stream.stop_stream()
     print("Stream is stopped")
 

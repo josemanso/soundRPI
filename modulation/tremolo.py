@@ -52,5 +52,8 @@ except IOError as e:
 time = np.arange(len(data))/fs
 plt.plot(time, data,'g--', time, y, 'r--')
 plt.title("Tremolo")
-plt.xlabel('Original green, tremolo red')
+plt.xlabel('tiempo(s): Señal Original verde, tremolo red')
+plt.ylabel('amplitud')
+plt.grid(True)
+plt.tight_layout()
 plt.show()

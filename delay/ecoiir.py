@@ -51,7 +51,9 @@ fs, data_eco = wavfile.read('/home/pi/wavfiles/eco.wav')
 plt.figure()
 plt.title('Echo IIR')
 plt.plot(data_eco, 'r--', audio,'g--')
-plt.xlabel('Original soun, green; data_filter, red')
-
+plt.xlabel('Muestras: Señal original, verde; señal filtrada,rojo')
+plt.ylabel('Amplitud')
+#plt.grid(True)
+plt.tight_layout()
 
 plt.show()

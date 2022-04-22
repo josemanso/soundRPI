@@ -66,8 +66,10 @@ plt.figure(figsize=(8,5))
 time = np.arange(len(data))/fs
 plt.plot(time, data, 'g--',time, y,'r--')
 plt.title('Chorus')
-plt.xlabel('Rojo datos chorus, verde, audio original')
-
+plt.xlabel('Tiempo(s): Señal original, verde; señal filtrada,rojo')
+plt.ylabel('Amplitud')
+#plt.grid(True)
+plt.tight_layout()
 plt.show()
     
                   

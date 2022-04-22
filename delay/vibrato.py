@@ -68,7 +68,10 @@ plt.figure(figsize=(8,5))
 time = np.arange(len(data))/fs
 plt.plot(time, data,'g--',time, y, 'r--')
 plt.title('Vibrato')
-plt.xlabel('Rojo datos vibrato, verde, audio original')
+plt.xlabel('Tiempo(s): Señal original, verde; señal filtrada,rojo')
+plt.ylabel('Amplitud')
+#plt.grid(True)
+plt.tight_layout()
 #plt.figure(2)
 #plt.plot(y)
 #lfo1 = delay*fs*np.sin(rate/fs*2*np.pi*time)# cuanto más grande maveces cambia, frecuencia

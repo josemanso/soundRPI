@@ -4,7 +4,8 @@ import pyaudio
 import time
 
 RATE = 44100
-
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 #  tipical delay, 5-10 ms, LFO 4-14 Hz
 
 #la frecuencia de muestreo en tiempo real es un CHUNK
@@ -51,8 +52,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 
 stream.start_stream()

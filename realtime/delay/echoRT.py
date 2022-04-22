@@ -6,6 +6,8 @@ import pyaudio
 import time
 import queue as queue
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 RATE = 44100
 # 1024*25 = 25600
 q = np.ndarray([])
@@ -28,8 +30,10 @@ p= pyaudio.PyAudio()
 stream = p.open(format= p.get_format_from_width(2),# dos bytes
                 channels=1,
                 rate= RATE,
-                input=True,
-                output=True,
+                #input=True,
+                #output=True,
+                input_device_index = dev_index,input = True,
+                output_device_index = dev_index,output = True,
                 stream_callback =callback)
 
 stream.start_stream()

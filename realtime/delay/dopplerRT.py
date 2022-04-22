@@ -3,10 +3,11 @@ import numpy as np
 import pyaudio
 import time
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 RATE = 44100
 # 5 segundos; rate 44100 x 5 = 220500 tramas ;216 x 1024 =221184
+dev_index = 2 # device index found by p.get_device_info
 
 seg = 5
 
@@ -73,8 +74,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True, 
         stream_callback = callback)
 
 stream.start_stream()
@@ -89,7 +92,7 @@ stream.stop_stream()
 stream.close()
 
 pa.terminate()
-
+"""
 plt.subplot(211)
 plt.plot(times,delay)
 plt.xlabel('delay')
@@ -97,3 +100,4 @@ plt.subplot(212)
 plt.plot(gain)
 plt.xlabel('gain')
 plt.show()
+"""

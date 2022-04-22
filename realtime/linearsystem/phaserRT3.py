@@ -6,6 +6,8 @@ import queue as queue
 from scipy.signal import sawtooth
 #import matplotlib.pyplot as plt
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 # parecido a flanger, cambindo el lfo, con una un señal diente de sierra
 RATE = 44100
 f_lfo = 0.5 # menor de 1 Hz
@@ -60,8 +62,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 

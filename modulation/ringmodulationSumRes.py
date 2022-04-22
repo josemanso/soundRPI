@@ -1,6 +1,8 @@
 #ring Modulation
 import sys
 import os
+import matplotlib
+matplotlib.use('TkAgg')
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
@@ -8,7 +10,9 @@ import matplotlib.pyplot as plt
 # entrada de argumentos
 try:
     if len(sys.argv) == 1:
-        file_input = "fish.wav"
+        #file_input = "audio_sin_500Hz_10s.wav"
+        file_input = "500Sine.wav"
+        #file_input = "440Hz_44100Hz_16bit_05sec.wav"
         
     else:
         file_input = sys.argv[1]
@@ -23,7 +27,6 @@ if os.path.isfile("/home/pi/wavfiles/"+file_input):
 else:
     print('File not exit')
     exit()
-
 
 # read wave file
 fs, data = wavfile.read(filename)
@@ -40,25 +43,15 @@ carrier = np.sin(2*np.pi*index*(fc/fs))
 
 y = carrier * data
 
-# write wav file
-try:
-    wavfile.write('/home/pi/wavfiles/ring.wav',
-                       fs, y.astype(np.int16))
-        #print('Escritura de archivo correcta') 
-except IOError as e:
-    #  # parent of IOError, OSError *and* WindowsError where available
-    print('Error al escritura el archivo')
-    print(e)
-
 #plot
 #f, ax1 = plt.subplots(2,1,figsize=(5,5))
 time = np.arange(len(data))/fs
-time2 = time[:1024]
-plt.plot(time, data,'g--',time, y, 'r--')
-#plt.plot(data[:1024],'g--', y[:1024], 'r--')
+#plt.plot(time, data,'g--',time, y, 'r--')
+plt.plot(data[:1024],'g--', y[:1024], 'r--')
+#plt.plot(data)
 plt.title('Ring Modulation')
-plt.xlabel('Original green, ring red')
-plt.xlabel('Muestras; Señal original, verde; señal filtrada, rojo')
+
+plt.xlabel('Muestras; Original, verde; ring rojo')
 plt.ylabel('Amplitud')
 plt.grid(True)
 plt.tight_layout()

@@ -5,7 +5,8 @@ import time
 
 
 RATE = 44100
-
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 # delay < 50 ms  50 *44,2 == 2205 y / 1024 = 2,15  - 3
 #M = 1764 # delay 40 ms, solo necesito dos
 M= 2200 # mejor
@@ -46,8 +47,8 @@ def callback(in_data, frame_count, time_info, status):
         B = np.append(B, y)
 
     samples = y.astype(np.int16).tostring()
-    if c == 30:
-        print('tiempo reverb: ', time.time() - s)
+    #if c == 30:
+        #print('tiempo reverb: ', time.time() - s)
     return (samples, pyaudio.paContinue)
 
 # open stream
@@ -55,15 +56,17 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 
 stream.start_stream()
 
 while stream.is_active():
     print("Stream is active")
-    time.sleep(10)
+    time.sleep(20)
     stream.stop_stream()
     print("Stream is stopped")
 

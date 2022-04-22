@@ -45,10 +45,12 @@ ax.plot(freq4, abs(h4), 'y--', label='4860')
 
 ax.plot(freqsa, abs(hsa), 's--', label='8000')
 
-plt.title('Equalizer Shelving, Peak filter')
+plt.title('Equalizador paramétrico, con filtros shelving y peak')
 plt.yscale("log")
 plt.xscale("log")
 plt.legend()
+plt.xlabel('frecuencia')
+plt.ylabel('amplitud/ganancia')
 plt.grid()
 plt.show()
 

@@ -3,6 +3,8 @@ import numpy as np
 import pyaudio
 import time
 
+# dispositivo de entrada / salida
+dev_index = 2 # device index found by p.get_device_info
 
 def simetria(x):
    # th=1/3; threshold for symmetrical soft clipping% by Schetzen Formula
@@ -45,8 +47,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        #input = True,
+        #output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
         stream_callback = callback)
 stream.start_stream()
 

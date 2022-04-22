@@ -90,8 +90,12 @@ except IOError as e:
 #plot
 time = np.arange(len(data))/fs
 plt.plot(time, yout, 'r--',time, data,'g--')
-plt.title("Schroeder's Reverb")
+plt.title("Reverberación, Schroeder")
 plt.xlabel('Original green, reverb red')
+plt.xlabel('Tiempo(s): Señal original, verde; reverb. rojo')
+plt.ylabel('Amplitud')
+plt.grid(True)
+plt.tight_layout()
 plt.show()
 
     

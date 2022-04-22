@@ -27,6 +27,6 @@ freq, h = signal.freqz(b, a)
 # Plot
 plt.plot(freq, 20*np.log10(np.maximum(abs(h), 1e-5)), color='blue')
 plt.title("Frequency Response")
-plt.xlabel('freq. ')
+plt.xlabel('Frecuencia ')
 plt.ylabel('Amplitude, dB')
 plt.show()

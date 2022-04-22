@@ -1,4 +1,3 @@
-# Compresor expansor
 # Compressor Expander
 import sys
 import os
@@ -109,18 +108,33 @@ plt.figure(2)
 # máx alrededor de 3.6, antes
 
 plt.plot(timel,data, 'g--',timel,y, 'r--')
-plt.xlabel('Señal original verde, señal comprimida /espandida, rojo')
+plt.title('Compresor/Expansor')
+plt.xlabel('tiempo (s)')
+plt.ylabel('amplitud')
+plt.grid(True)
+plt.tight_layout()
+#plt.xlabel('Señal original verde, señal comprimida /espandida, rojo')
 #plt.ylabel("log")
 plt.figure(3)
 plt.plot(timel,g)
 plt.xlabel('ganancia')
 plt.figure(4)
 plt.plot(timel,gc)
-plt.xlabel('compresión')
+plt.title('compresión')
+plt.xlabel('tiempo (s)')
+plt.ylabel('ganancia')
+plt.grid(True)
+plt.tight_layout()
+#plt.xlabel('compresión')
 plt.figure(5)
 plt.plot(timel,ge)
-plt.xlabel(' expansión ')
-plt.grid()
+plt.title('expansión')
+plt.xlabel('tiempo (s)')
+plt.ylabel('ganancia')
+plt.grid(True)
+plt.tight_layout()
+#plt.xlabel(' expansión ')
+#plt.grid()
 
 #plt.figure(3)
 #plt.plot(time,gain)

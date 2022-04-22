@@ -8,6 +8,7 @@ import queue as queue
 CHUNK = 1024*2 # pyaudi por defecto nos toma 1024 frames
  # por interacción, haremos la computación con dos chunk
 RATE = 44100
+dev_index = 2 # device index found by p.get_device_info
 # chorus parameters
 index = np.arange(CHUNK)
 rate1 = 7
@@ -69,8 +70,10 @@ stream = pa.open(
         format = pyaudio.paInt16,
         channels = 1,
         rate = RATE,
-        input = True,
-        output = True,
+        input_device_index = dev_index,input = True,
+        output_device_index = dev_index,output = True,
+        #input = True,
+        #output = True,
         stream_callback = callback)
 
 stream.start_stream()
